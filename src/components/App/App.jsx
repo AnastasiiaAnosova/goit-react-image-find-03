@@ -6,6 +6,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import Button from "components/Button/Button";
 import ImageGallery from "components/ImageGallery/ImageGallery";
 import { AppContainer } from "./App.styled";
+import Modal from "components/Modal/Modal";
 
 class App extends Component {
 
@@ -17,6 +18,8 @@ class App extends Component {
     error: null,
     showLoadMore: false,
     showModal: false,
+    largeImageURL: '',
+    alt: '',
   }
 
   handleSetSearchQuery = (searchQuery) => {
@@ -72,24 +75,35 @@ class App extends Component {
     this.setState(prev => ({ page: prev.page + 1 }));
   }
 
-  handleToogleModal = () => {
+  handleToogleModal = (url, alt) => {
     this.setState(prev => ({
-      showModal: !prev.showModal
+      showModal: !prev.showModal,
+
+      largeImageURL: prev.showModal ? '' : url,
+      alt: prev.showModal ? '' : alt,
     }))
+    // this.setUrltoModal(url, alt);
   }
 
+  // setUrltoModal = (url, alt) => {
+  //   this.state.showModal ? this.setState({ largeImageURL: url, alt }) : this.setState({ largeImageURL: '', alt: '' });
+  // }
+
   render() {
-    const { isLoading, showLoadMore, images } = this.state;
+    const { isLoading, showLoadMore, images, showModal, largeImageURL, alt } = this.state;
+    console.log("large image url: ", largeImageURL, "alt: ", alt, "show modal: ", showModal);
     return (
       <AppContainer>
         <Searchbar submit={this.handleSetSearchQuery} />
         {isLoading && <Loader />}
         {images && (<ImageGallery images={images} toogleModal={this.handleToogleModal} />)}
         {showLoadMore && <Button loadMoreClick={this.handleLoadNextImages} />}
+        {showModal && <Modal url={largeImageURL} alt={alt} toogleModal={this.handleToogleModal} />}
 
       </AppContainer>
     );
   }
 }
 
-export default App
+export default App;
+

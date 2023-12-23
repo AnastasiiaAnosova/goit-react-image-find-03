@@ -11,6 +11,8 @@ const ImageGallery = ({ images, toogleModal }) => {
                     key={id}
                     webformatURL={webformatURL}
                     alt={tags}
+                    largeImageURL={largeImageURL}
+                    toogleModal={toogleModal}
                 />
             ))}
         </ImageGalleryContainer>
