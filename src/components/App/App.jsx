@@ -4,6 +4,8 @@ import Loader from '../Loader/Loader';
 import Searchbar from "components/Searchbar/Searchbar";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import Button from "components/Button/Button";
+import ImageGallery from "components/ImageGallery/ImageGallery";
+import { AppContainer } from "./App.styled";
 
 class App extends Component {
 
@@ -70,14 +72,22 @@ class App extends Component {
     this.setState(prev => ({ page: prev.page + 1 }));
   }
 
+  handleToogleModal = () => {
+    this.setState(prev => ({
+      showModal: !prev.showModal
+    }))
+  }
+
   render() {
-    const { isLoading, showLoadMore } = this.state;
+    const { isLoading, showLoadMore, images } = this.state;
     return (
-      <>
+      <AppContainer>
         <Searchbar submit={this.handleSetSearchQuery} />
         {isLoading && <Loader />}
+        {images && (<ImageGallery images={images} toogleModal={this.handleToogleModal} />)}
         {showLoadMore && <Button loadMoreClick={this.handleLoadNextImages} />}
-      </>
+
+      </AppContainer>
     );
   }
 }
